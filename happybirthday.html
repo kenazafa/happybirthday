@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Happy Birthday Tante!</title>
+  <style>
+    :root{
+      --bg:#FFF8FB;
+      --accent:#FF78C1;
+      --accent2:#7AD3FF;
+      --card:#FFFFFF;
+      --text:#3b2b3b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: 'Segoe UI', Roboto, system-ui, -apple-system, 'Helvetica Neue', Arial;
+      background: radial-gradient(circle at 10% 10%, #FFF0F6 0%, var(--bg) 40%), linear-gradient(180deg,#FFF 0%, #FFF6F9 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+    }
+    .card{
+      width:980px;
+      max-width:95vw;
+      background:var(--card);
+      border-radius:20px;
+      box-shadow:0 10px 30px rgba(100,50,90,0.12);
+      padding:28px;
+      position:relative;
+      overflow:hidden;
+    }
+    header{display:flex;gap:18px;align-items:center}
+    .logo{
+      width:96px;height:96px;border-radius:18px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+      display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px;box-shadow:0 6px 18px rgba(122,211,255,0.15);
+    }
+    h1{margin:0;font-size:36px}
+    p.lead{margin:6px 0 0;color:#6b4f63}
+
+    .stage{display:flex;gap:24px;margin-top:20px}
+    .left{flex:1}
+    .right{width:320px}
+
+    /* Cake */
+    .cake{
+      width:360px;height:300px;background:transparent;position:relative;margin-top:12px
+    }
+    .cake .layer{position:absolute;left:50%;transform:translateX(-50%);border-radius:18px}
+    .cake .layer.bottom{bottom:18px;width:320px;height:120px;background:linear-gradient(180deg,#ffd1e8,#ffb6dd);box-shadow:inset 0 -8px 20px rgba(0,0,0,0.04)}
+    .cake .layer.mid{bottom:90px;width:260px;height:84px;background:linear-gradient(180deg,#fff,#fff6f6);border:6px solid #ffd9f0}
+    .cake .layer.top{bottom:170px;width:200px;height:64px;background:linear-gradient(180deg,#ffe6f4,#fff);border-radius:14px;border:6px solid #ffd9f0}
+    .frosting{position:absolute;left:50%;transform:translateX(-50%);bottom:148px;width:220px;height:28px;border-radius:999px;background:linear-gradient(90deg,#fff 0%, #ffe6f4 100%)}
+
+    .candles{position:absolute;left:50%;transform:translateX(-50%);bottom:190px;display:flex;gap:10px}
+    .candle{width:10px;height:36px;border-radius:4px;background:linear-gradient(180deg,#fff,#ffe6f4);display:flex;align-items:flex-start;justify-content:center;position:relative}
+    .candle::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--accent);position:absolute;top:-6px}
+    .flame{width:14px;height:18px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;position:absolute;top:-28px;opacity:0;transform:translateY(6px) scale(0.6);transition:all .25s}
+    .flame.on{opacity:1;transform:translateY(0) scale(1);filter:drop-shadow(0 6px 10px rgba(255,120,193,0.25))}
+    .flame .inner{width:8px;height:10px;background:linear-gradient(180deg,#fff1a8,#ffd66b);border-radius:50%}
+
+    .controls{margin-top:18px;display:flex;gap:10px;align-items:center}
+    .btn{background:linear-gradient(90deg,var(--accent),var(--accent2));color:white;padding:10px 14px;border-radius:12px;border:none;cursor:pointer;font-weight:700;box-shadow:0 8px 18px rgba(122,211,255,0.12)}
+    .btn.secondary{background:transparent;color:var(--accent);border:2px dashed rgba(122,211,255,0.18)}
+
+    /* Balloons */
+    .balloon{position:absolute;width:80px;height:110px;border-radius:50px 50px 40px 40px;bottom:-50px;left:20px;transform-origin:center bottom;animation:float 6s ease-in-out infinite}
+    .balloon.i2{left:120px;animation-duration:5s}
+    .balloon.i3{left:220px;animation-duration:7s}
+    .balloon.i4{left:300px;animation-duration:6.5s}
+    @keyframes float{0%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-160px) rotate(6deg)}100%{transform:translateY(0) rotate(-4deg)}}
+
+    /* Right column */
+    .right .card-mini{background:linear-gradient(180deg,#FFF,#FFF8FF);padding:14px;border-radius:12px;box-shadow:0 8px 20px rgba(150,90,140,0.04)}
+    .photo{width:100%;height:190px;border-radius:10px;background:linear-gradient(135deg,#ffdff0,#d7f6ff);display:flex;align-items:center;justify-content:center;color:#6b4f63;font-weight:700}
+
+    .guestbook{margin-top:12px}
+    .guestbook input{width:100%;padding:10px;border-radius:10px;border:1px solid #f0d7e6}
+    .messages{margin-top:8px;max-height:160px;overflow:auto}
+    .msg{padding:8px;margin-bottom:8px;background:linear-gradient(90deg,#fff,#fff6fb);border-radius:10px;border:1px solid #fee0f6}
+
+    footer{margin-top:18px;font-size:13px;color:#80606f;text-align:center}
+
+    /* Confetti canvas */
+    canvas.confetti{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+
+    /* Print styles */
+    @media print{
+      body{background:white}
+      .card{box-shadow:none}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="card" role="main">
+    <canvas class="confetti" id="confetti"></canvas>
+    <header>
+      <div class="logo">HB 🎉</div>
+      <div>
+        <h1>Happy Birthday, Tante!</h1>
+        <p class="lead">For a truly special tante — may today be filled with smiles, cake, and sweet surprises.</p>
+      </div>
+    </header>
+
+    <div class="stage">
+      <div class="left">
+        <div class="cake" aria-hidden="true">
+          <div class="layer bottom"></div>
+          <div class="layer mid"></div>
+          <div class="frosting"></div>
+          <div class="layer top"></div>
+
+          <div class="candles" id="candles">
+            <div class="candle"><div class="flame"><div class="inner"></div></div></div>
+            <div class="candle"><div class="flame"><div class="inner"></div></div></div>
+            <div class="candle"><div class="flame"><div class="inner"></div></div></div>
+            <div class="candle"><div class="flame"><div class="inner"></div></div></div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="btn" id="lightBtn">Nyalakan Lilin 🎂</button>
+          <button class="btn secondary" id="confettiBtn">Kejutan! 🎊</button>
+          
+        </div>
+
+        
+
+      </div>
+
+      <div class="right">
+        <div class="card-mini">
+          <h3 style="margin-top:0">A Few Words for You, Tante 💐</h3>
+          <p>Thank you for being such a warm, kind, and graceful person. Your presence always brings comfort and smiles to the people around you.</p>
+          <p>May this new year of your life be filled with good health, happiness, and countless moments that make your heart feel full.</p>
+          <p>May every dream you carry move a little closer, and may every day greet you with peace and joy.</p>
+          <p style="font-style:italic;color:#7d596f">You deserve all the love today and always.</p>
+        </div>
+      </div>
+    </div>e with love — <strong>Happy Birthday, Tante!</strong><br><em>"항상 따뜻하고 멋진 분이셔서 감사합니다, 탄테. 오늘 하루 정말 많이 웃으셨으면 좋겠어요 💖"</em></footer>
+  </div>
+
+  <script>
+    // --- Candle lighting ---
+    const lightBtn = document.getElementById('lightBtn');
+    const candles = document.querySelectorAll('.flame');
+    let lit = false;
+    lightBtn.addEventListener('click', ()=>{
+      lit = !lit;
+      candles.forEach((f,i)=>{
+        setTimeout(()=>{
+          f.classList.toggle('on', lit);
+        }, i*120)
+      })
+      if(lit){
+        launchConfetti(120);
+      }
+    });
+
+    // --- Guestbook (localStorage) ---
+    const addMsg = document.getElementById('addMsg');
+    const messagesEl = document.getElementById('messages');
+    const input = document.getElementById('guestName');
+    const clearBtn = document.getElementById('clearMsgs');
+
+    function renderMessages(){
+      const arr = JSON.parse(localStorage.getItem('hb-messages')||'[]');
+      messagesEl.innerHTML = arr.map(m=>`<div class="msg">${escapeHtml(m)}</div>`).join('')
+    }
+    addMsg.addEventListener('click', ()=>{
+      const v = input.value.trim();
+      if(!v) return;
+      const arr = JSON.parse(localStorage.getItem('hb-messages')||'[]');
+      arr.unshift(v);
+      localStorage.setItem('hb-messages', JSON.stringify(arr.slice(0,50)));
+      input.value='';renderMessages();
+      launchConfetti(30);
+    })
+    clearBtn.addEventListener('click', ()=>{localStorage.removeItem('hb-messages');renderMessages();})
+    renderMessages();
+
+    // --- Photo loader (if photo.jpg present) ---
+    (function tryLoadPhoto(){
+      fetch('photo.jpg', {method:'HEAD'}).then(r=>{
+        if(r.ok){
+          const p = document.getElementById('photoArea');
+          p.style.backgroundImage = `url('photo.jpg')`;
+          p.style.backgroundSize = 'cover';
+          p.style.color = 'transparent';
+        }
+      }).catch(()=>{});
+    })()
+
+    // --- Print ---
+    
+
+    // --- Confetti implementation (small, dependency-free) ---
+    const confCanvas = document.getElementById('confetti');
+    const ctx = confCanvas.getContext('2d');
+    let W, H, confettiPieces=[];
+    function resize(){W=confCanvas.width=confCanvas.offsetWidth;H=confCanvas.height=confCanvas.offsetHeight}
+    window.addEventListener('resize', resize);resize();
+
+    function random(min,max){return Math.random()*(max-min)+min}
+    function makePiece(){
+      return {
+        x: random(0,W), y: random(-H,0), w: random(6,12), h: random(8,16),
+        vx: random(-1.5,1.5), vy: random(2,5), rot: random(0,Math.PI*2), vr: random(-0.1,0.1),
+        color: ['#FF7AB8','#FFD66B','#7AD3FF','#FFC6E6'][Math.floor(Math.random()*4)]
+      }
+    }
+    function launchConfetti(amount=60){
+      for(let i=0;i<amount;i++) confettiPieces.push(makePiece());
+      if(!running) start();
+    }
+
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+      for(let p of confettiPieces){
+        p.x += p.vx; p.y += p.vy; p.vy += 0.02; p.rot += p.vr;
+        ctx.save();
+        ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+        ctx.fillStyle = p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+        ctx.restore();
+      }
+      confettiPieces = confettiPieces.filter(p=>p.y < H + 40);
+      if(confettiPieces.length===0){stop()}
+    }
+
+    let running=false, animId;
+    function start(){running=true; (function loop(){draw(); animId=requestAnimationFrame(loop)})()}
+    function stop(){running=false; cancelAnimationFrame(animId)}
+
+    // Quick 'random' confetti button
+    document.getElementById('confettiBtn').addEventListener('click', ()=>launchConfetti(120));
+
+    // HTML-escape helper
+    function escapeHtml(s){return s.replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
+
+    // small accessibility: keyboard hotkeys
+    window.addEventListener('keydown', (e)=>{
+      if(e.key==='c') launchConfetti(100);
+      if(e.key==='l') lightBtn.click();
+    })
+  </script>
+</body>
+</html>
